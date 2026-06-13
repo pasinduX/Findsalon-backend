@@ -1,0 +1,271 @@
+[
+  {
+    "id": 1,
+    "name": "Colombo",
+    "cities": [
+      {"id": 1, "name": "Colombo"},
+      {"id": 2, "name": "Dehiwala"},
+      {"id": 3, "name": "Moratuwa"},
+      {"id": 4, "name": "Sri Jayawardenepura Kotte"},
+      {"id": 5, "name": "Maharagama"},
+      {"id": 6, "name": "Homagama"},
+      {"id": 7, "name": "Kolonnawa"},
+      {"id": 8, "name": "Kesbewa"}
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Gampaha",
+    "cities": [
+      {"id": 1, "name": "Gampaha"},
+      {"id": 2, "name": "Negombo"},
+      {"id": 3, "name": "Kelaniya"},
+      {"id": 4, "name": "Ja-Ela"},
+      {"id": 5, "name": "Wattala"},
+      {"id": 6, "name": "Minuwangoda"},
+      {"id": 7, "name": "Divulapitiya"},
+      {"id": 8, "name": "Mirigama"}
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Kalutara",
+    "cities": [
+      {"id": 1, "name": "Kalutara"},
+      {"id": 2, "name": "Panadura"},
+      {"id": 3, "name": "Beruwala"},
+      {"id": 4, "name": "Horana"},
+      {"id": 5, "name": "Matugama"},
+      {"id": 6, "name": "Aluthgama"},
+      {"id": 7, "name": "Bandaragama"}
+    ]
+  },
+  {
+    "id": 4,
+    "name": "Kandy",
+    "cities": [
+      {"id": 1, "name": "Kandy"},
+      {"id": 2, "name": "Peradeniya"},
+      {"id": 3, "name": "Katugastota"},
+      {"id": 4, "name": "Gampola"},
+      {"id": 5, "name": "Nawalapitiya"},
+      {"id": 6, "name": "Wattegama"}
+    ]
+  },
+  {
+    "id": 5,
+    "name": "Matale",
+    "cities": [
+      {"id": 1, "name": "Matale"},
+      {"id": 2, "name": "Dambulla"},
+      {"id": 3, "name": "Galewela"},
+      {"id": 4, "name": "Ukuwela"},
+      {"id": 5, "name": "Rattota"}
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Nuwara Eliya",
+    "cities": [
+      {"id": 1, "name": "Nuwara Eliya"},
+      {"id": 2, "name": "Hatton"},
+      {"id": 3, "name": "Talawakele"},
+      {"id": 4, "name": "Kotagala"},
+      {"id": 5, "name": "Maskeliya"}
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Galle",
+    "cities": [
+      {"id": 1, "name": "Galle"},
+      {"id": 2, "name": "Hikkaduwa"},
+      {"id": 3, "name": "Ambalangoda"},
+      {"id": 4, "name": "Elpitiya"},
+      {"id": 5, "name": "Baddegama"},
+      {"id": 6, "name": "Karapitiya"}
+    ]
+  },
+  {
+    "id": 8,
+    "name": "Matara",
+    "cities": [
+      {"id": 1, "name": "Matara"},
+      {"id": 2, "name": "Weligama"},
+      {"id": 3, "name": "Dikwella"},
+      {"id": 4, "name": "Akuressa"},
+      {"id": 5, "name": "Kamburupitiya"}
+    ]
+  },
+  {
+    "id": 9,
+    "name": "Hambantota",
+    "cities": [
+      {"id": 1, "name": "Hambantota"},
+      {"id": 2, "name": "Tangalle"},
+      {"id": 3, "name": "Tissamaharama"},
+      {"id": 4, "name": "Ambalantota"},
+      {"id": 5, "name": "Beliatta"}
+    ]
+  },
+  {
+    "id": 10,
+    "name": "Jaffna",
+    "cities": [
+      {"id": 1, "name": "Jaffna"},
+      {"id": 2, "name": "Nallur"},
+      {"id": 3, "name": "Chavakachcheri"},
+      {"id": 4, "name": "Point Pedro"},
+      {"id": 5, "name": "Kilinochchi Town"}
+    ]
+  },
+  {
+    "id": 11,
+    "name": "Kilinochchi",
+    "cities": [
+      {"id": 1, "name": "Kilinochchi"},
+      {"id": 2, "name": "Poonakary"},
+      {"id": 3, "name": "Paranthan"}
+    ]
+  },
+  {
+    "id": 12,
+    "name": "Mannar",
+    "cities": [
+      {"id": 1, "name": "Mannar"},
+      {"id": 2, "name": "Murunkan"},
+      {"id": 3, "name": "Pesalai"}
+    ]
+  },
+  {
+    "id": 13,
+    "name": "Vavuniya",
+    "cities": [
+      {"id": 1, "name": "Vavuniya"},
+      {"id": 2, "name": "Nedunkeni"},
+      {"id": 3, "name": "Cheddikulam"}
+    ]
+  },
+  {
+    "id": 14,
+    "name": "Mullaitivu",
+    "cities": [
+      {"id": 1, "name": "Mullaitivu"},
+      {"id": 2, "name": "Oddusuddan"},
+      {"id": 3, "name": "Puthukudiyiruppu"}
+    ]
+  },
+  {
+    "id": 15,
+    "name": "Batticaloa",
+    "cities": [
+      {"id": 1, "name": "Batticaloa"},
+      {"id": 2, "name": "Kattankudy"},
+      {"id": 3, "name": "Eravur"},
+      {"id": 4, "name": "Kaluwanchikudy"}
+    ]
+  },
+  {
+    "id": 16,
+    "name": "Ampara",
+    "cities": [
+      {"id": 1, "name": "Ampara"},
+      {"id": 2, "name": "Kalmunai"},
+      {"id": 3, "name": "Akkaraipattu"},
+      {"id": 4, "name": "Sainthamaruthu"}
+    ]
+  },
+  {
+    "id": 17,
+    "name": "Trincomalee",
+    "cities": [
+      {"id": 1, "name": "Trincomalee"},
+      {"id": 2, "name": "Kinniya"},
+      {"id": 3, "name": "Kantale"},
+      {"id": 4, "name": "Nilaveli"}
+    ]
+  },
+  {
+    "id": 18,
+    "name": "Kurunegala",
+    "cities": [
+      {"id": 1, "name": "Kurunegala"},
+      {"id": 2, "name": "Kuliyapitiya"},
+      {"id": 3, "name": "Pannala"},
+      {"id": 4, "name": "Narammala"},
+      {"id": 5, "name": "Wariyapola"}
+    ]
+  },
+  {
+    "id": 19,
+    "name": "Puttalam",
+    "cities": [
+      {"id": 1, "name": "Puttalam"},
+      {"id": 2, "name": "Chilaw"},
+      {"id": 3, "name": "Wennappuwa"},
+      {"id": 4, "name": "Nattandiya"},
+      {"id": 5, "name": "Marawila"}
+    ]
+  },
+  {
+    "id": 20,
+    "name": "Anuradhapura",
+    "cities": [
+      {"id": 1, "name": "Anuradhapura"},
+      {"id": 2, "name": "Kekirawa"},
+      {"id": 3, "name": "Tambuttegama"},
+      {"id": 4, "name": "Medawachchiya"}
+    ]
+  },
+  {
+    "id": 21,
+    "name": "Polonnaruwa",
+    "cities": [
+      {"id": 1, "name": "Polonnaruwa"},
+      {"id": 2, "name": "Kaduruwela"},
+      {"id": 3, "name": "Hingurakgoda"},
+      {"id": 4, "name": "Medirigiriya"}
+    ]
+  },
+  {
+    "id": 22,
+    "name": "Badulla",
+    "cities": [
+      {"id": 1, "name": "Badulla"},
+      {"id": 2, "name": "Bandarawela"},
+      {"id": 3, "name": "Ella"},
+      {"id": 4, "name": "Hali-Ela"},
+      {"id": 5, "name": "Welimada"}
+    ]
+  },
+  {
+    "id": 23,
+    "name": "Monaragala",
+    "cities": [
+      {"id": 1, "name": "Monaragala"},
+      {"id": 2, "name": "Wellawaya"},
+      {"id": 3, "name": "Bibile"},
+      {"id": 4, "name": "Buttala"}
+    ]
+  },
+  {
+    "id": 24,
+    "name": "Ratnapura",
+    "cities": [
+      {"id": 1, "name": "Ratnapura"},
+      {"id": 2, "name": "Embilipitiya"},
+      {"id": 3, "name": "Balangoda"},
+      {"id": 4, "name": "Pelmadulla"}
+    ]
+  },
+  {
+    "id": 25,
+    "name": "Kegalle",
+    "cities": [
+      {"id": 1, "name": "Kegalle"},
+      {"id": 2, "name": "Mawanella"},
+      {"id": 3, "name": "Warakapola"},
+      {"id": 4, "name": "Rambukkana"}
+    ]
+  }
+]

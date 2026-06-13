@@ -1,0 +1,17 @@
+[
+  {"id": 1, "name": "Haircut"},
+  {"id": 2, "name": "Fade"},
+  {"id": 3, "name": "Skin Fade"},
+  {"id": 4, "name": "Beard Trim"},
+  {"id": 5, "name": "Beard Styling"},
+  {"id": 6, "name": "Hot Towel Shave"},
+  {"id": 7, "name": "Traditional Shave"},
+  {"id": 8, "name": "Hair Coloring"},
+  {"id": 9, "name": "Hair Design"},
+  {"id": 10, "name": "Children's Haircut"},
+  {"id": 11, "name": "Mustache Trim"},
+  {"id": 12, "name": "Eyebrow Threading"},
+  {"id": 13, "name": "Hair Treatment"},
+  {"id": 14, "name": "Dreadlocks"},
+  {"id": 15, "name": "Braiding"}
+]

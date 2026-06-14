@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	"findsalon-backend/apiHandlers"
@@ -17,9 +18,7 @@ import (
 )
 
 func main() {
-	if err := godotenv.Load(".env"); err != nil {
-		log.Println("Warning: .env file not found, reading from environment")
-	}
+	loadEnvironment()
 
 	integrations.SetEnvironmentVariables()
 	dbConfig.ConnectToMongoDB()
@@ -61,4 +60,50 @@ func main() {
 	}
 	log.Printf("FindSalon backend starting on port %s", port)
 	log.Fatal(app.Listen(":" + port))
+}
+
+func loadEnvironment() {
+	if envPath := findEnvFile(); envPath != "" {
+		if err := godotenv.Load(envPath); err != nil {
+			log.Printf("Warning: failed to load %s: %v", envPath, err)
+		}
+		return
+	}
+
+	wd, _ := os.Getwd()
+	log.Printf("Warning: .env file not found from %s, reading from environment", wd)
+}
+
+func findEnvFile() string {
+	seen := map[string]bool{}
+	for _, start := range envSearchRoots() {
+		for dir := start; dir != ""; dir = filepath.Dir(dir) {
+			if seen[dir] {
+				break
+			}
+			seen[dir] = true
+
+			envPath := filepath.Join(dir, ".env")
+			if info, err := os.Stat(envPath); err == nil && !info.IsDir() {
+				return envPath
+			}
+
+			parent := filepath.Dir(dir)
+			if parent == dir {
+				break
+			}
+		}
+	}
+	return ""
+}
+
+func envSearchRoots() []string {
+	roots := make([]string, 0, 2)
+	if wd, err := os.Getwd(); err == nil {
+		roots = append(roots, wd)
+	}
+	if exe, err := os.Executable(); err == nil {
+		roots = append(roots, filepath.Dir(exe))
+	}
+	return roots
 }

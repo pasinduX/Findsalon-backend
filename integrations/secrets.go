@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 
 	"findsalon-backend/dbConfig"
 )
@@ -93,6 +94,9 @@ func SetEnvironmentVariables() {
 	if DatabaseUrl == "" || DatabaseName == "" {
 		log.Fatal("DATABASE_URL and DATABASE_NAME must be set")
 	}
+	if !isMongoURI(DatabaseUrl) {
+		log.Fatal("DATABASE_URL must start with mongodb:// or mongodb+srv://")
+	}
 
 	dbConfig.DATABASE_URL = DatabaseUrl
 	dbConfig.DATABASE_NAME = DatabaseName
@@ -115,4 +119,9 @@ func getEnvAsInt(key string, fallback int) int {
 		return fallback
 	}
 	return parsed
+}
+
+func isMongoURI(value string) bool {
+	uri := strings.TrimSpace(value)
+	return strings.HasPrefix(uri, "mongodb://") || strings.HasPrefix(uri, "mongodb+srv://")
 }

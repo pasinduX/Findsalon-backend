@@ -36,6 +36,8 @@ func registerPublicRoutes(router fiber.Router) {
 	auth.Get("/google/login", api.GoogleLoginApi)
 	auth.Get("/google/callback", api.GoogleCallbackApi)
 	auth.Post("/refresh", api.RefreshTokenApi)
+	auth.Post("/phone/send-otp", api.SendPhoneOtpApi)
+	auth.Post("/phone/verify-otp", api.VerifyPhoneOtpApi)
 
 	salon := router.Group("/salon")
 	salon.Get("/FindSalon", api.FindSalonApi)

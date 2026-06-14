@@ -7,6 +7,9 @@ type User struct {
 	FullName        string    `json:"FullName" bson:"FullName" validate:"required"`
 	Email           string    `json:"Email" bson:"Email" validate:"required,email"`
 	Phone           string    `json:"Phone" bson:"Phone"`
+	PhoneVerified   bool      `json:"PhoneVerified" bson:"PhoneVerified"`
+	PhoneOTP        string    `json:"-" bson:"PhoneOTP"`
+	PhoneOTPExpiry  time.Time `json:"-" bson:"PhoneOTPExpiry"`
 	AvatarUrl       string    `json:"AvatarUrl" bson:"AvatarUrl"`
 	GoogleAvatarUrl string    `json:"GoogleAvatarUrl" bson:"GoogleAvatarUrl"`
 	Provider        string    `json:"Provider" bson:"Provider"`
@@ -25,6 +28,7 @@ type UserResponse struct {
 	FullName        string    `json:"FullName"`
 	Email           string    `json:"Email"`
 	Phone           string    `json:"Phone"`
+	PhoneVerified   bool      `json:"PhoneVerified"`
 	AvatarUrl       string    `json:"AvatarUrl"`
 	GoogleAvatarUrl string    `json:"GoogleAvatarUrl"`
 	Provider        string    `json:"Provider"`

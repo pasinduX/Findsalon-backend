@@ -31,13 +31,7 @@ func main() {
 	}
 	functions.SeedDefaultTemplates()
 
-	storagePath := os.Getenv("STORAGE_BASE_PATH")
-	if storagePath == "" {
-		storagePath = "./uploads"
-	}
-	if err := os.MkdirAll(storagePath, 0755); err != nil {
-		log.Fatalf("Failed to create uploads directory: %v", err)
-	}
+	storagePath := ensureStoragePath()
 
 	app := fiber.New(fiber.Config{
 		AppName:        "FindSalon v1.0",
@@ -106,4 +100,23 @@ func envSearchRoots() []string {
 		roots = append(roots, filepath.Dir(exe))
 	}
 	return roots
+}
+
+func ensureStoragePath() string {
+	storagePath := integrations.StorageBasePath
+	if storagePath == "" {
+		storagePath = "./uploads"
+	}
+	if err := os.MkdirAll(storagePath, 0o755); err == nil {
+		integrations.StorageBasePath = storagePath
+		return storagePath
+	} else {
+		fallbackPath := filepath.Join(os.TempDir(), "findsalon-uploads")
+		log.Printf("Warning: could not create uploads directory %s: %v; using %s", storagePath, err, fallbackPath)
+		if fallbackErr := os.MkdirAll(fallbackPath, 0o755); fallbackErr != nil {
+			log.Fatalf("Failed to create fallback uploads directory %s: %v", fallbackPath, fallbackErr)
+		}
+		integrations.StorageBasePath = fallbackPath
+		return fallbackPath
+	}
 }

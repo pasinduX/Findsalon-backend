@@ -5,6 +5,8 @@ import (
 	"log"
 	"time"
 
+	"findsalon-backend/dto"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -53,8 +55,11 @@ func ensureIndexes(ctx context.Context) error {
 		Options: options.Index().
 			SetUnique(true).
 			SetPartialFilterExpression(bson.M{
-				"Status":    bson.M{"$ne": "cancelled"},
 				"StartTime": bson.M{"$gt": time.Time{}},
+				"$or": bson.A{
+					bson.M{"Status": dto.BookingStatusBooked},
+					bson.M{"Status": dto.BookingStatusConfirmed},
+				},
 			}).
 			SetName("unique_barber_starttime_active"),
 	})

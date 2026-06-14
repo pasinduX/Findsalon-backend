@@ -45,5 +45,5 @@ func CreateSalonApi(c *fiber.Ctx) error {
 	if err := dao.CreateSalon(salon); err != nil {
 		return utils.SendErrorResponse(c, fiber.StatusInternalServerError, "Failed to create salon")
 	}
-	return utils.SendSuccessResponse(c)
+	return utils.SendDataResponse(c, salon)
 }

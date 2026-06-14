@@ -32,8 +32,7 @@ var CorsAllowedOrigins string
 var DatabaseUrl string
 var DatabaseName string
 
-// Storage (local + S3)
-var StorageBasePath string
+// Storage (S3)
 var MaxImageSizeMb int
 var AwsRegion string
 var AwsAccessKeyId string
@@ -74,7 +73,6 @@ func SetEnvironmentVariables() {
 	FrontendUrl = getEnv("FRONTEND_URL", "http://localhost:4000")
 	CorsAllowedOrigins = getEnv("CORS_ALLOWED_ORIGINS", defaultCorsAllowedOrigins())
 
-	StorageBasePath = getEnv("STORAGE_BASE_PATH", "./uploads")
 	MaxImageSizeMb = getEnvAsInt("MAX_IMAGE_SIZE_MB", 3)
 
 	AwsRegion = getEnv("AWS_REGION", "")

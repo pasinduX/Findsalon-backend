@@ -8,6 +8,7 @@ import (
 	"findsalon-backend/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type authSyncRequest struct {
@@ -31,6 +32,19 @@ func AuthSyncApi(c *fiber.Ctx) error {
 
 	existing, err := dao.FindUserByEmail(req.Email)
 	if err == nil {
+		if existing.GoogleId == "" && req.GoogleId != "" {
+			update := bson.M{"GoogleId": req.GoogleId}
+			if req.Provider != "" {
+				update["Provider"] = req.Provider
+			}
+			if updateErr := dao.UpdateUser(existing.UserId, update); updateErr == nil {
+				existing.GoogleId = req.GoogleId
+				if req.Provider != "" {
+					existing.Provider = req.Provider
+				}
+				existing.UpdatedAt = time.Now()
+			}
+		}
 		// User already exists — return their record
 		return utils.SendDataResponse(c, dto.UserResponse{
 			UserId:          existing.UserId,

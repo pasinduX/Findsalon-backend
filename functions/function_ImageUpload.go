@@ -3,14 +3,12 @@ package functions
 import (
 	"fmt"
 	"mime/multipart"
-	"os"
 	"path/filepath"
 	"strings"
 
 	"findsalon-backend/integrations"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 )
 
 var allowedImageExtensions = map[string]bool{
@@ -25,17 +23,7 @@ func SaveUploadedImage(c *fiber.Ctx, fieldName, subFolder string) (string, error
 	if err := validateImageFile(file); err != nil {
 		return "", err
 	}
-	ext := strings.ToLower(filepath.Ext(file.Filename))
-	fileName := uuid.New().String() + ext
-	folderPath := filepath.Join(integrations.StorageBasePath, subFolder)
-	if err := os.MkdirAll(folderPath, 0o755); err != nil {
-		return "", err
-	}
-	destination := filepath.Join(folderPath, fileName)
-	if err := c.SaveFile(file, destination); err != nil {
-		return "", err
-	}
-	return filepath.ToSlash(filepath.Join(subFolder, fileName)), nil
+	return UploadToS3(file, sanitizeS3Folder(subFolder))
 }
 
 func validateImageFile(file *multipart.FileHeader) error {
@@ -48,4 +36,14 @@ func validateImageFile(file *multipart.FileHeader) error {
 		return fmt.Errorf("image size exceeds %d MB", integrations.MaxImageSizeMb)
 	}
 	return nil
+}
+
+func sanitizeS3Folder(folder string) string {
+	folder = strings.TrimSpace(folder)
+	folder = strings.Trim(folder, "/")
+	folder = filepath.ToSlash(folder)
+	if folder == "" || folder == "." {
+		return "general"
+	}
+	return folder
 }

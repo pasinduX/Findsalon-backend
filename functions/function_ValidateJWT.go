@@ -100,6 +100,9 @@ func Auth0Middleware() fiber.Handler {
 		}
 
 		userId := claims.UserId
+		if userId == claims.Subject {
+			userId = ""
+		}
 		email := claims.Email
 		role := claims.Role
 
@@ -129,6 +132,20 @@ func Auth0Middleware() fiber.Handler {
 				userId = user.UserId
 				role = user.Role
 			}
+		}
+
+		if userId == "" && claims.Subject != "" {
+			if user, err := dao.FindUserByGoogleId(claims.Subject); err == nil {
+				userId = user.UserId
+				role = user.Role
+				if email == "" {
+					email = user.Email
+				}
+			}
+		}
+
+		if userId == "" {
+			return utils.SendErrorResponse(c, fiber.StatusUnauthorized, "Authenticated user is not synced")
 		}
 
 		c.Locals("userId", userId)

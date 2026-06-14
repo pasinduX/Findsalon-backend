@@ -17,8 +17,19 @@ import (
 )
 
 func UploadToS3(file *multipart.FileHeader, folder string) (string, error) {
-	if integrations.AwsS3Bucket == "" {
+	bucket := strings.TrimSpace(integrations.AwsS3Bucket)
+	region := strings.TrimSpace(integrations.AwsRegion)
+	accessKeyID := strings.TrimSpace(integrations.AwsAccessKeyId)
+	secretAccessKey := strings.TrimSpace(integrations.AwsSecretAccessKey)
+
+	if bucket == "" {
 		return "", fmt.Errorf("S3 bucket not configured")
+	}
+	if region == "" {
+		return "", fmt.Errorf("AWS region not configured")
+	}
+	if accessKeyID == "" || secretAccessKey == "" {
+		return "", fmt.Errorf("AWS credentials not configured")
 	}
 
 	src, err := file.Open()
@@ -28,10 +39,10 @@ func UploadToS3(file *multipart.FileHeader, folder string) (string, error) {
 	defer src.Close()
 
 	cfg, err := config.LoadDefaultConfig(context.Background(),
-		config.WithRegion(integrations.AwsRegion),
+		config.WithRegion(region),
 		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(
-			integrations.AwsAccessKeyId,
-			integrations.AwsSecretAccessKey,
+			accessKeyID,
+			secretAccessKey,
 			"",
 		)),
 	)
@@ -44,7 +55,7 @@ func UploadToS3(file *multipart.FileHeader, folder string) (string, error) {
 
 	client := s3.NewFromConfig(cfg)
 	_, err = client.PutObject(context.Background(), &s3.PutObjectInput{
-		Bucket:      aws.String(integrations.AwsS3Bucket),
+		Bucket:      aws.String(bucket),
 		Key:         aws.String(key),
 		Body:        src,
 		ContentType: aws.String(contentType(ext)),
@@ -53,7 +64,15 @@ func UploadToS3(file *multipart.FileHeader, folder string) (string, error) {
 		return "", err
 	}
 
-	return integrations.AwsS3BaseUrl + "/" + key, nil
+	return s3ObjectURL(bucket, region, key), nil
+}
+
+func s3ObjectURL(bucket, region, key string) string {
+	baseURL := strings.TrimSpace(integrations.AwsS3BaseUrl)
+	if baseURL == "" {
+		baseURL = fmt.Sprintf("https://%s.s3.%s.amazonaws.com", bucket, region)
+	}
+	return strings.TrimRight(baseURL, "/") + "/" + key
 }
 
 func contentType(ext string) string {

@@ -10,7 +10,10 @@ import (
 func Router(app *fiber.App) {
 	app.Use(cors.New())
 
+	app.Get("/health", api.HealthApi)
+
 	v1 := app.Group("/api/v1")
+	v1.Get("/health", api.HealthApi)
 
 	registerPublicRoutes(v1)
 	registerAuthenticatedRoutes(v1)

@@ -55,7 +55,7 @@ var DefaultPageSize int
 func SetEnvironmentVariables() {
 	DatabaseUrl = getEnv("DATABASE_URL", "mongodb://localhost:27017")
 	DatabaseName = getEnv("DATABASE_NAME", "findsalon_db")
-	ServerPort = getEnv("SERVER_PORT", "8888")
+	ServerPort = getEnv("PORT", getEnv("SERVER_PORT", "8888"))
 	ServiceName = getEnv("SERVICE_NAME", "findsalon-backend")
 
 	JwtSecret = getEnv("JWT_SECRET", "your_super_secret_jwt_key_here")

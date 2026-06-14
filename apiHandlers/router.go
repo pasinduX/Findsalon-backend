@@ -2,13 +2,19 @@ package apiHandlers
 
 import (
 	"findsalon-backend/api"
+	"findsalon-backend/integrations"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func Router(app *fiber.App) {
-	app.Use(cors.New())
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     integrations.CorsAllowedOrigins,
+		AllowMethods:     "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+		AllowHeaders:     "Origin,Content-Type,Accept,Authorization",
+		AllowCredentials: true,
+	}))
 
 	app.Get("/health", api.HealthApi)
 

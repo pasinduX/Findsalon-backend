@@ -26,6 +26,7 @@ var FrontendUrl string
 // Server
 var ServerPort string
 var ServiceName string
+var CorsAllowedOrigins string
 
 // Database
 var DatabaseUrl string
@@ -71,6 +72,7 @@ func SetEnvironmentVariables() {
 	GoogleRedirectUrl = getEnv("GOOGLE_REDIRECT_URL", "")
 	GoogleAuthStateSecret = getEnv("GOOGLE_AUTH_STATE_SECRET", "")
 	FrontendUrl = getEnv("FRONTEND_URL", "http://localhost:4000")
+	CorsAllowedOrigins = getEnv("CORS_ALLOWED_ORIGINS", defaultCorsAllowedOrigins())
 
 	StorageBasePath = getEnv("STORAGE_BASE_PATH", "./uploads")
 	MaxImageSizeMb = getEnvAsInt("MAX_IMAGE_SIZE_MB", 3)
@@ -124,4 +126,17 @@ func getEnvAsInt(key string, fallback int) int {
 func isMongoURI(value string) bool {
 	uri := strings.TrimSpace(value)
 	return strings.HasPrefix(uri, "mongodb://") || strings.HasPrefix(uri, "mongodb+srv://")
+}
+
+func defaultCorsAllowedOrigins() string {
+	origins := []string{
+		"http://localhost:3000",
+		"http://localhost:4000",
+		"https://findsalon-frontend.vercel.app",
+		"https://findsalon-frontend-f1cz.vercel.app",
+	}
+	if FrontendUrl != "" {
+		origins = append(origins, strings.TrimRight(FrontendUrl, "/"))
+	}
+	return strings.Join(origins, ",")
 }

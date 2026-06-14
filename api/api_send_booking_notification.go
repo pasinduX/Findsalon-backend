@@ -24,6 +24,7 @@ func SendBookingNotificationApi(c *fiber.Ctx) error {
 		BarberId:      payload.BarberId,
 		CustomerName:  payload.CustomerName,
 		CustomerEmail: payload.CustomerEmail,
+		CustomerPhone: payload.CustomerPhone,
 		Date:          payload.Date,
 		StartTime:     payload.StartTime,
 		EndTime:       payload.EndTime,

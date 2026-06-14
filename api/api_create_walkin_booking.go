@@ -78,7 +78,7 @@ func CreateWalkInBookingApi(c *fiber.Ctx) error {
 		SalonId:      booking.SalonId,
 		BarberId:     booking.BarberId,
 		CustomerName: booking.CustomerName,
-		EventType:    "booking_created",
+		EventType:    dto.EventBookingCreated,
 	})
 
 	return utils.SendSuccessResponse(c)

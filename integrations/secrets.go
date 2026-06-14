@@ -49,6 +49,12 @@ var SmtpFromName string
 var SmtpFromEmail string
 var SmtpEnabled bool
 
+// Twilio WhatsApp
+var TwilioWhatsAppEnabled bool
+var TwilioAccountSid string
+var TwilioAuthToken string
+var TwilioWhatsAppFrom string
+
 // Pagination
 var DefaultPageSize int
 
@@ -88,6 +94,11 @@ func SetEnvironmentVariables() {
 	SmtpFromName = getEnv("SMTP_FROM_NAME", "FindSalon")
 	SmtpFromEmail = getEnv("SMTP_FROM_EMAIL", "noreply@findsalon.lk")
 	SmtpEnabled = getEnv("SMTP_ENABLED", "false") == "true"
+
+	TwilioWhatsAppEnabled = getEnv("TWILIO_WHATSAPP_ENABLED", "false") == "true"
+	TwilioAccountSid = getEnv("TWILIO_ACCOUNT_SID", "")
+	TwilioAuthToken = getEnv("TWILIO_AUTH_TOKEN", "")
+	TwilioWhatsAppFrom = getEnv("TWILIO_WHATSAPP_FROM", "")
 
 	DefaultPageSize = getEnvAsInt("DEFAULT_PAGE_SIZE", 20)
 

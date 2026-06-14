@@ -2,8 +2,10 @@ package api
 
 import (
 	"errors"
+	"time"
 
 	salonerr "findsalon-backend/errors"
+	"findsalon-backend/functions"
 	"findsalon-backend/repository"
 	"findsalon-backend/service"
 	"findsalon-backend/utils"
@@ -60,6 +62,17 @@ func DirectBookingApi(c *fiber.Ctx) error {
 	if err != nil {
 		return availabilityError(c, err)
 	}
+	go functions.NotifyBooking(functions.BookingNotificationPayload{
+		BookingId:    booking.BookingId,
+		UserId:       booking.UserId,
+		SalonId:      booking.SalonId,
+		BarberId:     booking.BarberId,
+		CustomerName: booking.CustomerName,
+		Date:         booking.StartTime.Format("2006-01-02"),
+		StartTime:    booking.StartTime.Format(time.Kitchen),
+		EndTime:      booking.EndTime.Format(time.Kitchen),
+		EventType:    dto.EventBookingCreated,
+	})
 	return utils.SendDataResponse(c, booking)
 }
 

@@ -72,7 +72,10 @@ func UpdateBookingApi(c *fiber.Ctx) error {
 				SalonId:      booking.SalonId,
 				BarberId:     booking.BarberId,
 				CustomerName: booking.CustomerName,
-				EventType:    "booking_cancelled",
+				Date:         booking.StartTime.Format("2006-01-02"),
+				StartTime:    booking.StartTime.Format("3:04 PM"),
+				EndTime:      booking.EndTime.Format("3:04 PM"),
+				EventType:    dto.EventBookingCancelled,
 			})
 
 		case dto.BookingStatusCompleted:
@@ -87,7 +90,10 @@ func UpdateBookingApi(c *fiber.Ctx) error {
 				SalonId:      booking.SalonId,
 				BarberId:     booking.BarberId,
 				CustomerName: booking.CustomerName,
-				EventType:    "booking_completed",
+				Date:         booking.StartTime.Format("2006-01-02"),
+				StartTime:    booking.StartTime.Format("3:04 PM"),
+				EndTime:      booking.EndTime.Format("3:04 PM"),
+				EventType:    dto.EventBookingCompleted,
 			})
 
 		default:

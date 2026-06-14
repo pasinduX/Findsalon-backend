@@ -7,6 +7,7 @@ type BookingNotificationPayload struct {
 	BarberId      string `json:"BarberId"`
 	CustomerName  string `json:"CustomerName"`
 	CustomerEmail string `json:"CustomerEmail"`
+	CustomerPhone string `json:"CustomerPhone"`
 	Date          string `json:"Date"`
 	StartTime     string `json:"StartTime"`
 	EndTime       string `json:"EndTime"`

@@ -20,6 +20,7 @@ type BookingNotificationPayload struct {
 	BarberId      string
 	CustomerName  string
 	CustomerEmail string
+	CustomerPhone string
 	Date          string
 	StartTime     string
 	EndTime       string
@@ -30,6 +31,7 @@ type BookingNotificationPayload struct {
 // Replaces the HTTP call to notification-service in the old booking-ms.
 // Designed to be called in a goroutine so booking creation is not blocked.
 func NotifyBooking(payload BookingNotificationPayload) {
+	payload = enrichBookingNotificationPayload(payload)
 	title, body := buildNotificationText(payload)
 
 	notification := dto.Notification{
@@ -53,6 +55,37 @@ func NotifyBooking(payload BookingNotificationPayload) {
 	if payload.CustomerEmail != "" {
 		go sendBookingEmail(payload, title, body)
 	}
+	if payload.CustomerPhone != "" {
+		go func() {
+			if err := SendWhatsAppMessage(payload.CustomerPhone, body); err != nil {
+				log.Printf("NotifyBooking: failed to send WhatsApp message: %v", err)
+			}
+		}()
+	}
+}
+
+func enrichBookingNotificationPayload(payload BookingNotificationPayload) BookingNotificationPayload {
+	if payload.UserId == "" {
+		return payload
+	}
+	if payload.CustomerEmail != "" && payload.CustomerPhone != "" {
+		return payload
+	}
+	user, err := dao.FindUserByUserId(payload.UserId)
+	if err != nil {
+		log.Printf("NotifyBooking: failed to load user contact details: %v", err)
+		return payload
+	}
+	if payload.CustomerName == "" {
+		payload.CustomerName = user.FullName
+	}
+	if payload.CustomerEmail == "" {
+		payload.CustomerEmail = user.Email
+	}
+	if payload.CustomerPhone == "" {
+		payload.CustomerPhone = user.Phone
+	}
+	return payload
 }
 
 func buildNotificationText(p BookingNotificationPayload) (title, body string) {

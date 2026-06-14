@@ -67,7 +67,10 @@ func CreateBookingApi(c *fiber.Ctx) error {
 		SalonId:      body.SalonId,
 		BarberId:     body.BarberId,
 		CustomerName: body.CustomerName,
-		EventType:    "booking_created",
+		Date:         body.StartTime.Format("2006-01-02"),
+		StartTime:    body.StartTime.Format(time.Kitchen),
+		EndTime:      body.EndTime.Format(time.Kitchen),
+		EventType:    dto.EventBookingCreated,
 	})
 
 	return utils.SendSuccessResponse(c)

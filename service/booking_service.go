@@ -56,12 +56,13 @@ func (s *BookingService) GetAvailability(ctx context.Context, req dto.Availabili
 		return nil, err
 	}
 	return GetAvailableSlots(AvailabilityInput{
-		Window:   window,
-		Service:  *svc,
-		StepMin:  schedule.EffectiveSlotStep(),
-		Bookings: bookings,
-		Blocks:   blocks,
-		Timezone: schedule.EffectiveTimezone(),
+		Window:             window,
+		Service:            *svc,
+		StepMin:            schedule.EffectiveSlotStep(),
+		Bookings:           bookings,
+		Blocks:             blocks,
+		Timezone:           schedule.EffectiveTimezone(),
+		IncludeUnavailable: req.IncludeUnavailable,
 	})
 }
 
@@ -90,19 +91,20 @@ func (s *BookingService) CreateDirectBooking(ctx context.Context, req dto.Direct
 	}
 	now := time.Now().UTC()
 	booking := dto.Booking{
-		BookingId:    uuid.New().String(),
-		BarberId:     req.BarberId,
-		SalonId:      req.SalonId,
-		ServiceId:    req.ServiceId,
-		UserId:       req.CustomerId,
-		CustomerName: req.CustomerName,
-		Notes:        req.Notes,
-		StartTime:    req.StartTime.UTC(),
-		EndTime:      endTime,
-		Status:       dto.BookingStatusBooked,
-		BookingType:  dto.BookingTypeDirect,
-		CreatedAt:    now,
-		UpdatedAt:    now,
+		BookingId:     uuid.New().String(),
+		BarberId:      req.BarberId,
+		SalonId:       req.SalonId,
+		ServiceId:     req.ServiceId,
+		UserId:        req.CustomerId,
+		CustomerName:  req.CustomerName,
+		CustomerPhone: req.CustomerPhone,
+		Notes:         req.Notes,
+		StartTime:     req.StartTime.UTC(),
+		EndTime:       endTime,
+		Status:        dto.BookingStatusBooked,
+		BookingType:   dto.BookingTypeDirect,
+		CreatedAt:     now,
+		UpdatedAt:     now,
 	}
 	if err := s.bookingRepo.Insert(ctx, booking); err != nil {
 		if mongo.IsDuplicateKeyError(err) {

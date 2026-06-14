@@ -4,6 +4,7 @@ import (
 	"errors"
 	"time"
 
+	"findsalon-backend/dao"
 	salonerr "findsalon-backend/errors"
 	"findsalon-backend/functions"
 	"findsalon-backend/repository"
@@ -58,20 +59,42 @@ func DirectBookingApi(c *fiber.Ctx) error {
 		return utils.SendErrorResponse(c, fiber.StatusBadRequest, err.Error())
 	}
 
+	userId, _ := c.Locals("userId").(string)
+	if userId == "" {
+		userId = req.CustomerId
+	}
+	if userId == "" {
+		return utils.SendErrorResponse(c, fiber.StatusUnauthorized, "Authenticated user is required")
+	}
+
+	user, err := dao.FindUserByUserId(userId)
+	if err != nil {
+		return utils.SendErrorResponse(c, fiber.StatusUnauthorized, "Authenticated user is not synced")
+	}
+
+	req.CustomerId = user.UserId
+	if req.CustomerName == "" {
+		req.CustomerName = user.FullName
+	}
+	if req.CustomerPhone == "" {
+		req.CustomerPhone = user.Phone
+	}
+
 	booking, err := bookingSvc.CreateDirectBooking(c.Context(), req)
 	if err != nil {
 		return availabilityError(c, err)
 	}
 	go functions.NotifyBooking(functions.BookingNotificationPayload{
-		BookingId:    booking.BookingId,
-		UserId:       booking.UserId,
-		SalonId:      booking.SalonId,
-		BarberId:     booking.BarberId,
-		CustomerName: booking.CustomerName,
-		Date:         booking.StartTime.Format("2006-01-02"),
-		StartTime:    booking.StartTime.Format(time.Kitchen),
-		EndTime:      booking.EndTime.Format(time.Kitchen),
-		EventType:    dto.EventBookingCreated,
+		BookingId:     booking.BookingId,
+		UserId:        booking.UserId,
+		SalonId:       booking.SalonId,
+		BarberId:      booking.BarberId,
+		CustomerName:  booking.CustomerName,
+		CustomerPhone: booking.CustomerPhone,
+		Date:          booking.StartTime.Format("2006-01-02"),
+		StartTime:     booking.StartTime.Format(time.Kitchen),
+		EndTime:       booking.EndTime.Format(time.Kitchen),
+		EventType:     dto.EventBookingCreated,
 	})
 	return utils.SendDataResponse(c, booking)
 }

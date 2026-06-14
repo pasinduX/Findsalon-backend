@@ -15,11 +15,12 @@ import (
 )
 
 type WalkInRequest struct {
-	SalonId      string `json:"SalonId" validate:"required"`
-	BarberId     string `json:"BarberId" validate:"required"`
-	SlotId       string `json:"SlotId" validate:"required"`
-	CustomerName string `json:"CustomerName" validate:"required"`
-	Notes        string `json:"Notes"`
+	SalonId       string `json:"SalonId" validate:"required"`
+	BarberId      string `json:"BarberId" validate:"required"`
+	SlotId        string `json:"SlotId" validate:"required"`
+	CustomerName  string `json:"CustomerName" validate:"required"`
+	CustomerPhone string `json:"CustomerPhone"`
+	Notes         string `json:"Notes"`
 }
 
 func CreateWalkInBookingApi(c *fiber.Ctx) error {
@@ -50,18 +51,19 @@ func CreateWalkInBookingApi(c *fiber.Ctx) error {
 
 	now := time.Now()
 	booking := dto.Booking{
-		BookingId:    uuid.New().String(),
-		UserId:       "",
-		SalonId:      body.SalonId,
-		BarberId:     body.BarberId,
-		SlotId:       body.SlotId,
-		Status:       dto.BookingStatusConfirmed,
-		BookingType:  dto.BookingTypeWalkIn,
-		CustomerName: body.CustomerName,
-		Notes:        body.Notes,
-		CreatedAt:    now,
-		UpdatedAt:    now,
-		Deleted:      false,
+		BookingId:     uuid.New().String(),
+		UserId:        "",
+		SalonId:       body.SalonId,
+		BarberId:      body.BarberId,
+		SlotId:        body.SlotId,
+		Status:        dto.BookingStatusConfirmed,
+		BookingType:   dto.BookingTypeWalkIn,
+		CustomerName:  body.CustomerName,
+		CustomerPhone: body.CustomerPhone,
+		Notes:         body.Notes,
+		CreatedAt:     now,
+		UpdatedAt:     now,
+		Deleted:       false,
 	}
 
 	if err := dao.CreateBooking(booking); err != nil {
@@ -73,12 +75,13 @@ func CreateWalkInBookingApi(c *fiber.Ctx) error {
 	}
 
 	go functions.NotifyBooking(functions.BookingNotificationPayload{
-		BookingId:    booking.BookingId,
-		UserId:       booking.UserId,
-		SalonId:      booking.SalonId,
-		BarberId:     booking.BarberId,
-		CustomerName: booking.CustomerName,
-		EventType:    dto.EventBookingCreated,
+		BookingId:     booking.BookingId,
+		UserId:        booking.UserId,
+		SalonId:       booking.SalonId,
+		BarberId:      booking.BarberId,
+		CustomerName:  booking.CustomerName,
+		CustomerPhone: booking.CustomerPhone,
+		EventType:     dto.EventBookingCreated,
 	})
 
 	return utils.SendSuccessResponse(c)

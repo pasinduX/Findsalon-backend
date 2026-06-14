@@ -27,7 +27,9 @@ func CreateBookingApi(c *fiber.Ctx) error {
 		return utils.SendErrorResponse(c, fiber.StatusBadRequest, err.Error())
 	}
 
-	body.UserId = userId
+	if userId != "" {
+		body.UserId = userId
+	}
 	body.BookingType = dto.BookingTypeOnline
 
 	available, err := functions.IsSlotAvailable(body.SlotId)
@@ -62,15 +64,16 @@ func CreateBookingApi(c *fiber.Ctx) error {
 	}
 
 	go functions.NotifyBooking(functions.BookingNotificationPayload{
-		BookingId:    body.BookingId,
-		UserId:       body.UserId,
-		SalonId:      body.SalonId,
-		BarberId:     body.BarberId,
-		CustomerName: body.CustomerName,
-		Date:         body.StartTime.Format("2006-01-02"),
-		StartTime:    body.StartTime.Format(time.Kitchen),
-		EndTime:      body.EndTime.Format(time.Kitchen),
-		EventType:    dto.EventBookingCreated,
+		BookingId:     body.BookingId,
+		UserId:        body.UserId,
+		SalonId:       body.SalonId,
+		BarberId:      body.BarberId,
+		CustomerName:  body.CustomerName,
+		CustomerPhone: body.CustomerPhone,
+		Date:          body.StartTime.Format("2006-01-02"),
+		StartTime:     body.StartTime.Format(time.Kitchen),
+		EndTime:       body.EndTime.Format(time.Kitchen),
+		EventType:     dto.EventBookingCreated,
 	})
 
 	return utils.SendSuccessResponse(c)

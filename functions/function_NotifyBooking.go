@@ -8,6 +8,7 @@ import (
 	"findsalon-backend/dao"
 	"findsalon-backend/dbConfig"
 	"findsalon-backend/dto"
+	"findsalon-backend/integrations"
 
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
@@ -61,6 +62,8 @@ func NotifyBooking(payload BookingNotificationPayload) {
 				log.Printf("NotifyBooking: failed to send WhatsApp message: %v", err)
 			}
 		}()
+	} else if integrations.TwilioWhatsAppEnabled {
+		log.Printf("NotifyBooking: WhatsApp enabled but no customer phone found for booking %s", payload.BookingId)
 	}
 }
 

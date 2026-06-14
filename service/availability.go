@@ -56,12 +56,13 @@ func buildLocalTime(date time.Time, hhmm string, loc *time.Location) (time.Time,
 }
 
 type AvailabilityInput struct {
-	Window   WorkWindow
-	Service  dto.SalonService
-	StepMin  int
-	Bookings []dto.Booking
-	Blocks   []dto.ScheduleBlock
-	Timezone string
+	Window             WorkWindow
+	Service            dto.SalonService
+	StepMin            int
+	Bookings           []dto.Booking
+	Blocks             []dto.ScheduleBlock
+	Timezone           string
+	IncludeUnavailable bool
 }
 
 func GetAvailableSlots(input AvailabilityInput) ([]dto.AvailableSlot, error) {
@@ -81,32 +82,41 @@ func GetAvailableSlots(input AvailabilityInput) ([]dto.AvailableSlot, error) {
 		if t.Before(now) {
 			continue
 		}
-		if isAvailable(t, slotEnd, input.Bookings, input.Blocks) {
+		status, reason := availabilityStatus(t, slotEnd, input.Bookings, input.Blocks)
+		if status == "available" || input.IncludeUnavailable {
 			local := t.In(loc)
 			slots = append(slots, dto.AvailableSlot{
-				StartTime:    t,
-				EndTime:      slotEnd,
-				DisplayStart: local.Format(timeLayout),
-				DisplayEnd:   slotEnd.In(loc).Format(timeLayout),
+				StartTime:         t,
+				EndTime:           slotEnd,
+				DisplayStart:      local.Format(timeLayout),
+				DisplayEnd:        slotEnd.In(loc).Format(timeLayout),
+				Status:            status,
+				IsAvailable:       status == "available",
+				UnavailableReason: reason,
 			})
 		}
 	}
 	return slots, nil
 }
 
-func isAvailable(start, end time.Time, bookings []dto.Booking, blocks []dto.ScheduleBlock) bool {
+func availabilityStatus(start, end time.Time, bookings []dto.Booking, blocks []dto.ScheduleBlock) (string, string) {
 	for i := range bookings {
 		if bookings[i].Status == dto.BookingStatusCancelled {
 			continue
 		}
 		if overlaps(start, end, bookings[i].StartTime, bookings[i].EndTime) {
-			return false
+			return "booked", "Booked"
 		}
 	}
 	for i := range blocks {
 		if overlaps(start, end, blocks[i].StartTime, blocks[i].EndTime) {
-			return false
+			return "blocked", "Unavailable"
 		}
 	}
-	return true
+	return "available", ""
+}
+
+func isAvailable(start, end time.Time, bookings []dto.Booking, blocks []dto.ScheduleBlock) bool {
+	status, _ := availabilityStatus(start, end, bookings, blocks)
+	return status == "available"
 }

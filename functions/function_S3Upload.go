@@ -69,10 +69,14 @@ func UploadToS3(file *multipart.FileHeader, folder string) (string, error) {
 
 func s3ObjectURL(bucket, region, key string) string {
 	baseURL := strings.TrimSpace(integrations.AwsS3BaseUrl)
-	if baseURL == "" {
+	if baseURL == "" || !isHTTPURL(baseURL) {
 		baseURL = fmt.Sprintf("https://%s.s3.%s.amazonaws.com", bucket, region)
 	}
 	return strings.TrimRight(baseURL, "/") + "/" + key
+}
+
+func isHTTPURL(value string) bool {
+	return strings.HasPrefix(value, "https://") || strings.HasPrefix(value, "http://")
 }
 
 func contentType(ext string) string {
